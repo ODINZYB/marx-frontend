@@ -252,133 +252,152 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-8 bg-deep-space selection:bg-mars-red/30">
-      
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] bg-mars-red/5 rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '10s' }} />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-neon-green/5 rounded-full blur-[180px] opacity-60" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]"></div>
+    <div className="min-h-screen bg-[#0F172A] text-slate-200 font-sans selection:bg-indigo-500/30">
+      {/* Subtle modern background gradient */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-indigo-600/10 blur-[120px] rounded-full"></div>
       </div>
 
-      {/* Top Bar with Wallet Connect & Language Toggle */}
-      <div className="absolute top-8 right-12 z-20 flex items-center gap-4">
-        {/* Language Toggle */}
-        <button
-          onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')}
-          className="glass-button w-10 h-10 rounded-full flex items-center justify-center text-xs font-mono text-white/60 hover:text-white transition-all duration-300"
-          title="Toggle Language"
-        >
-          <Globe size={16} className="mb-0.5" />
-          <span className="absolute -bottom-4 text-[8px] tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-            {language === 'en' ? 'ZH' : 'EN'}
-          </span>
-        </button>
-
-        {/* Wallet Connect */}
-        <button
-          onClick={connectWallet}
-          disabled={isConnecting}
-          className="glass-button px-6 py-2.5 rounded-full flex items-center gap-3 text-xs font-mono tracking-[0.2em] text-white/80 hover:text-mars-red transition-all duration-500"
-        >
-          <Wallet size={16} className={isConnecting ? "animate-pulse text-mars-red" : "text-mars-red/80"} />
-          <span className="mt-[2px]">{isConnecting ? t.connecting : walletAddress ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}` : t.connectWallet}</span>
-        </button>
-      </div>
-
-      <main className="relative z-10 w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-12">
+      {/* Header / Navbar */}
+      <header className="relative z-20 flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0F172A]/80 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span className="text-xl font-bold text-white tracking-wide">Peace Protocol</span>
+        </div>
         
-        {/* Left Column: Sync & Balance */}
-        <div className="flex flex-col items-center lg:items-start space-y-12">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')}
+            className="text-sm font-medium text-slate-400 hover:text-white transition-colors px-2"
+          >
+            {language === 'en' ? '中文' : 'EN'}
+          </button>
           
-          {/* Header */}
-          <div className="text-center lg:text-left space-y-4">
-            <h1 className="text-5xl lg:text-7xl font-light tracking-[-0.05em] text-white/90">
-              PEACE <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-mars-red via-premium-gold to-mars-red bg-[length:200%_auto] animate-[gradient_8s_linear_infinite]">PROTOCOL</span>
-            </h1>
-            <p className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase">
-              {t.subtitle}
-            </p>
-            {/* Display Referrer if bounded */}
-            {referrer !== "0x0000000000000000000000000000000000000000" ? (
-              <p className="text-[10px] text-neon-green/60 font-mono mt-4 bg-neon-green/5 inline-block px-4 py-1.5 rounded-full border border-neon-green/10 shadow-[inset_0_0_10px_rgba(0,240,255,0.05)]">
-                {t.referredBy} <span className="text-neon-green/80">{referrer.substring(0, 6)}...{referrer.substring(38)}</span>
-              </p>
-            ) : null}
+          <button
+            onClick={connectWallet}
+            disabled={isConnecting}
+            className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all border border-slate-700"
+          >
+            <Wallet size={16} className={walletAddress ? "text-indigo-400" : "text-slate-400"} />
+            {isConnecting ? t.connecting : walletAddress ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}` : t.connectWallet}
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="relative z-10 container mx-auto px-4 pt-12 pb-24 flex flex-col items-center">
+        
+        {/* Title Section */}
+        <div className="text-center mb-10 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            Claim Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Airdrop</span>
+          </h1>
+          <p className="text-slate-400 text-lg">
+            Interact with the contract to verify your address, accumulate PEACE tokens, and secure your allocation.
+          </p>
+        </div>
+
+        {/* Central Card (Uniswap/PancakeSwap style) */}
+        <div className="w-full max-w-md bg-[#1E293B] border border-slate-800 rounded-3xl p-6 shadow-2xl">
+          
+          {/* Balance Display */}
+          <div className="bg-[#0F172A] rounded-2xl p-5 mb-6 border border-slate-800/50">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-medium text-slate-400">Your Balance</span>
+              <span className="text-xs px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 font-medium">BSC Mainnet</span>
+            </div>
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-bold text-white"><CountUp value={balance} /></span>
+              <span className="text-lg text-slate-300 font-medium mb-1">PEACE</span>
+            </div>
           </div>
 
-          {/* Sync Button Container */}
-          <div className="relative py-8">
-            <SyncButton 
-              onSync={handleSync} 
-              isSyncing={isSyncing} 
-              cooldownRemaining={cooldownRemaining} 
-            />
-            
-            {/* Connection Status & TX Status */}
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 whitespace-nowrap">
-              <div className="flex items-center gap-2 bg-deep-space/50 px-3 py-1 rounded-full border border-white/5 backdrop-blur-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse shadow-[0_0_8px_#00F0FF]" />
-                <span className="text-[9px] font-mono text-white/50 tracking-[0.2em]">
-                  {t.systemOnline.split(' ')[0]} <span className="text-neon-green/80">{t.systemOnline.split(' ')[1] || t.systemOnline.replace(t.systemOnline.split(' ')[0], '')}</span>
+          {/* Referrer Info */}
+          {referrer !== "0x0000000000000000000000000000000000000000" && (
+            <div className="flex justify-between items-center bg-slate-800/50 rounded-xl p-3 mb-6 border border-slate-700/50">
+              <span className="text-sm text-slate-400">Invited by</span>
+              <span className="text-sm font-mono text-indigo-300">{referrer.substring(0, 6)}...{referrer.substring(38)}</span>
+            </div>
+          )}
+
+          {/* Action Button */}
+          <button
+            onClick={handleSync}
+            disabled={isSyncing || cooldownRemaining > 0 || !walletAddress}
+            className={`w-full py-4 rounded-2xl font-bold text-lg transition-all duration-200 flex items-center justify-center gap-2 ${
+              !walletAddress 
+                ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                : cooldownRemaining > 0
+                  ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
+                  : isSyncing
+                    ? 'bg-indigo-600/80 text-white cursor-wait'
+                    : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/25'
+            }`}
+          >
+            {!walletAddress ? (
+              "Connect Wallet to Claim"
+            ) : isSyncing ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </>
+            ) : cooldownRemaining > 0 ? (
+              `Next claim in: ${Math.floor(cooldownRemaining / 3600).toString().padStart(2, '0')}:${Math.floor((cooldownRemaining % 3600) / 60).toString().padStart(2, '0')}:${(cooldownRemaining % 60).toString().padStart(2, '0')}`
+            ) : (
+              "Interact & Claim"
+            )}
+          </button>
+
+          {/* Status Message */}
+          {txStatus && (
+            <div className={`mt-4 p-3 rounded-xl text-center text-sm font-medium ${
+              txStatus.includes("Failed") || txStatus.includes("失败") || txStatus.includes("Rejected") || txStatus.includes("拒绝")
+                ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                : "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+            }`}>
+              {txStatus}
+            </div>
+          )}
+
+          {/* Referral Link Area */}
+          <div className="mt-8 pt-6 border-t border-slate-800">
+            <p className="text-sm font-medium text-slate-400 mb-3">Your Referral Link</p>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 bg-[#0F172A] border border-slate-700 rounded-xl px-3 py-2.5 overflow-hidden">
+                <span className="text-sm text-slate-300 font-mono truncate block w-full">
+                  {walletAddress ? `...?ref=${walletAddress.substring(0,8)}...` : "Connect wallet to get link"}
                 </span>
               </div>
-              {txStatus ? (
-                <span className="text-[10px] font-mono text-mars-red tracking-[0.1em] mt-1 animate-pulse">
-                  {txStatus}
-                </span>
-              ) : null}
-            </div>
-          </div>
-
-          {/* Balance Display */}
-          <div className="glass-panel p-8 flex flex-col items-center lg:items-start min-w-[320px] relative group border-t-0 border-l-0 border-r-0 border-b border-mars-red/20 rounded-none bg-gradient-to-b from-white/[0.02] to-transparent">
-            <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-3 flex items-center gap-2">
-              <div className="w-1 h-1 bg-mars-red rounded-full" />
-              {t.totalAssets}
-            </span>
-            <div className="flex items-baseline gap-3 mb-6">
-              <CountUp value={balance} />
-              <span className="text-sm font-light tracking-widest text-mars-red/80">PEACE</span>
-            </div>
-            
-            {/* Referral Link Copy Button */}
-            <div className="w-full pt-5 border-t border-white/5 flex items-center justify-between">
-              <span className="text-[10px] text-white/30 font-mono tracking-widest">{t.referralLink}</span>
               <button 
                 onClick={copyReferralLink}
-                className="flex items-center gap-2 text-[10px] tracking-widest bg-white/5 hover:bg-white/10 px-4 py-2 rounded transition-all duration-300 text-white/60 hover:text-white"
+                disabled={!walletAddress}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-xl transition-colors"
               >
-                {isCopied ? <Check size={12} className="text-neon-green" /> : <Copy size={12} />}
-                {isCopied ? t.copied : t.copy}
+                {isCopied ? <Check size={18} className="text-green-400" /> : <Copy size={18} />}
               </button>
             </div>
           </div>
-
         </div>
 
-        {/* Right Column: Dashboard & Leaderboard */}
-        <div className="flex flex-col gap-8 w-full max-w-md mx-auto lg:mx-0">
-          
-          {/* Quota Dashboard */}
-          <QuotaDashboard totalSlots={20} activeSlots={14} />
-
-          {/* Leaderboard */}
-          <Leaderboard levels={levels} onClaim={handleClaim} />
-
+        {/* Info Grid (Stats) */}
+        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          {/* We will replace these with simpler standard UI components in the next step */}
+          <div className="bg-[#1E293B] border border-slate-800 rounded-3xl p-6">
+             <QuotaDashboard totalSlots={20} activeSlots={14} />
+          </div>
+          <div className="bg-[#1E293B] border border-slate-800 rounded-3xl p-6">
+             <Leaderboard levels={levels} onClaim={handleClaim} />
+          </div>
         </div>
 
       </main>
-
-      <footer className="absolute bottom-6 text-center w-full z-10 flex justify-center items-center gap-4">
-        <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-white/10" />
-        <p className="text-[9px] text-white/20 font-mono tracking-[0.4em] uppercase">
-          {t.footer}
-        </p>
-        <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-white/10" />
-      </footer>
     </div>
   );
 }
