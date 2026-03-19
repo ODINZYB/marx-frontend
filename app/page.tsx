@@ -13,8 +13,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 // 将页面主体包裹在组件中以便使用 useSearchParams
 function HomeContent() {
-  // Updated to use the public localtunnel URL for testing
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://marsx-backend.loca.lt";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://zyb.onrender.com";
   const { language, setLanguage, t } = useLanguage();
   const [balance, setBalance] = useState(12450);
   const [isSyncing, setIsSyncing] = useState(false);
